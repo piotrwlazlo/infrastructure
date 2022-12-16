@@ -2,7 +2,7 @@ version: '2.4'
 
 services:
   artifactory:
-    image: docker.bintray.io/jfrog/artifactory-jcr:7.39.4
+    image: docker.bintray.io/jfrog/artifactory-jcr:latest
     container_name: artifactory
     ports:
       - "8081:8081"
@@ -27,8 +27,7 @@ services:
       - "50000:50000"
       - "8880:8080"
     volumes:
-      - ./jenkins_controller/casc.yml:/usr/share/jenkins/ref/casc.yml
-      - ./jenkins_controller/jobs:/usr/share/jenkins/ref/jobs
+      - ./jenkins_controller/casc.yaml:/usr/share/jenkins/ref/casc.yaml
     restart: always
 
   jenkins_agent:
@@ -38,10 +37,10 @@ services:
     build: jenkins_agent
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    expose:
-      - 22
+    ports:
+      - "2222:22"
     environment:
-      - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCaJxXl+C4GsmIcrsXQ+mqS/t9SNsFrtj5LffdnNr8+9a40UUHDX1mKe26U8oSarCciLYEtXWsWtl1VmQS6JAdVI5vZKS2J0Nt6oe+AH9y2PhL6wtqUsel2aJHUk8w13Dfkt+w6tZBQxCuzBDvWRt6hsprVuJvWoICMZanVOoXb+BfJx9133mG/uviF/rgtEqn5CqTbHWN1cUs+jei0GOlfyQr/GR7P5cP6baxe5yxCebohlgbYvDrwUT2ZBSlJHIaqbrbeBF/yigCcWCA9z46PubKc/qIcDY5qeFuldy0mqEdpMILDLjcrtidnp4wvRa8cxZl4w9fNYGwK8C56/b9n
+      - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC66Sb2sWAgIrg9JNz0H6rLP0CUpIQAQCv6bf/Uvoh5yX60OS1Ns1SjGXbT4RFabHoqn+IDckQ8MJiWaQAIy1/9B4fpTthfAxyQBC8vqBmGRdQm4MdNKhZOFgw0m8gpkp9EQH8H8b7oBOBY3/wBi5siZmOLFH1jh7FiNdKbts8FBrDi6U1b+uq2MvV56tbttXf2v/O+8JPgs1rkg2tQIcRjVdL4yK+B4jKgKqpH4I6tmsN0yYo00AGdILgEaPFfnNdxhS+gZoYgr/d90T1CuPY0+wsqFk+iV0Jh7yq7k65jUxRxEdOjfmUZsckAt0lH0jxKrL21hwY4nzvILyKAM2RayQGtaO9KbBveWtkbFytJDCBJLXLQZBCYO+7OXgxY742ta+y8vLS+EeBnkykINgV7MA1485EAoW0jGCfNOUJW4X323uazX7dVyDEglJb/3Qa/dmn85/0UwpNruiXfi4XmaoOyyQdT1HWkTJ3kTp1uki59C3aK9UhN445uxGupFmk=
     restart: always
 
   sonarqube:
